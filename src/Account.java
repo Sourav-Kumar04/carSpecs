@@ -1,17 +1,22 @@
+import exception.DodgyNameException;
+
+import java.util.Objects;
 
 public class Account {
 
-    int accountNumber;
-    double accountBalance;
+    private String name;
+    private double balance;
+    private AccountType accountType;
 
     private static double interestRate = 0.05;
 
-    public Account(double accountBalance, int accountNumber) {
-        this.accountBalance = accountBalance;
-        this.accountNumber = accountNumber;
+    public Account(double balance, String name, AccountType accountType) throws DodgyNameException {
+        setName(name);
+        this.balance = balance;
+        this.accountType = accountType;
     }
-    public Account() {
 
+    public Account() {
     }
 
     public static double getInterestRate() {
@@ -22,33 +27,56 @@ public class Account {
         Account.interestRate = interestRate;
     }
 
-    public int getAccountNumber() {
-        return accountNumber;
+    public String getName() {
+        return name;
     }
 
+    public void setName(String name) throws DodgyNameException {
+        if (name == null || name.trim().isEmpty()) {
+            throw new DodgyNameException("Account name cannot be empty");
+        }
+        if ("Fingers".equalsIgnoreCase(name.trim())) {
+            throw new DodgyNameException("Name 'Fingers' is not allowed");
+        }
+        this.name = name.trim();
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    // Backward-compatible alias for older test code.
     public double getAccountBalance() {
-        return accountBalance;
+        return balance;
     }
 
-    public void setAccountNumber(int accountNumber) {
-        this.accountNumber = accountNumber;
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public void setAccountBalance(double accountBalance) {
-        this.accountBalance = accountBalance;
+        this.balance = accountBalance;
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
     }
 
     public void addInterest() {
-        accountBalance *= (1 + interestRate);
+        balance *= (1 + interestRate);
     }
 
     public boolean withdraw(double amount) {
-        if (amount <= accountBalance) {
-            accountBalance -= amount;
-            System.out.println(" now has a balance of " + accountBalance);
+        if (amount <= balance) {
+            balance -= amount;
+            System.out.println(name + " now has a balance of " + balance);
             return true;
         } else {
-            System.out.println(" has insufficient funds for this withdrawal");
+            System.out.println(name + " has insufficient funds for this withdrawal");
             return false;
         }
     }
@@ -57,22 +85,29 @@ public class Account {
         return withdraw(20);
     }
 
-
     @Override
     public String toString() {
         return "Account{" +
-                "accountNumber=" + accountNumber +
-                ", accountBalance=" + accountBalance +
+                "name='" + name + '\'' +
+                ", balance=" + balance +
+                ", accountType=" + accountType +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(name, accountType);
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Account)) {
+            return false;
+        }
+        Account other = (Account) obj;
+        return Objects.equals(name, other.name) && accountType == other.accountType;
     }
 }

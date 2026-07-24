@@ -1,16 +1,13 @@
 import exception.DodgyNameException;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class TestAccount {
+public class TestAccount2 {
     public static void main(String[] args) {
-
         Account[] accounts = new Account[5];
-        accounts[0] = createAccount(1000.0, "Alice", AccountType.CHECKING);
+
+        accounts[0] = createAccount(1000.0, "Fingers", AccountType.CHECKING);
         accounts[1] = createAccount(2000.0, "Bob", AccountType.CHECKING);
         accounts[2] = createAccount(1500.0, "Charlie", AccountType.SAVING);
-        accounts[3] = createAccount(1500.0, "Diana", AccountType.SAVING);
+        accounts[3] = createAccount(1500.0, "Charlie", AccountType.SAVING);
         accounts[4] = createAccount(2500.0, "Eve", AccountType.CREDIT_CARD);
 
         Account.setInterestRate(0.07);
@@ -24,27 +21,6 @@ public class TestAccount {
             System.out.println("Balance after interest: " + accounts[i].getBalance());
             System.out.println();
         }
-
-        System.out.println(accounts[2].equals(accounts[3]) ? "account 2 and 3 are equal" : "account 2 and 3 are not equal");
-        System.out.println(accounts[2].equals(accounts[4]) ? "account 2 and 4 are equal" : "account 2 and 4 are not equal");
-
-        accounts[0].withdraw(100);
-        accounts[1].withdraw();
-        accounts[2].withdraw(2500);
-
-        // CarParts enum test
-        CarParts part = CarParts.WHEELS;
-        if (part == CarParts.ENGINE) {
-            System.out.println("The part is an engine");
-        } else {
-            System.out.println("The part is not an engine");
-        }
-
-        // List usage
-        List<Account> acc = new ArrayList<>();
-        acc.add(accounts[0]);
-        acc.add(accounts[1]);
-        System.out.println("Accounts in list: " + acc);
     }
 
     private static Account createAccount(double balance, String name, AccountType type) {
